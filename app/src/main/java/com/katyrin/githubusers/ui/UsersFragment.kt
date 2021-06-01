@@ -9,6 +9,7 @@ import com.katyrin.githubusers.databinding.FragmentUsersBinding
 import com.katyrin.githubusers.presenter.BackButtonListener
 import com.katyrin.githubusers.presenter.UsersPresenter
 import com.katyrin.githubusers.presenter.UsersView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -19,7 +20,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(GithubUsersRepo(), App.instance.router, AndroidScreens())
+        UsersPresenter(GithubUsersRepo(), App.instance.router, AndroidSchedulers.mainThread())
     }
     var adapter: UsersRVAdapter? = null
     private var vb: FragmentUsersBinding? = null
