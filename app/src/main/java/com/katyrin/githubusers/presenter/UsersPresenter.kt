@@ -26,7 +26,7 @@ class UsersPresenter(
         override fun getCount() = users.size
     }
 
-    private val usersListPresenter = UsersListPresenter()
+    val usersListPresenter = UsersListPresenter()
     private var disposable: CompositeDisposable = CompositeDisposable()
 
 
