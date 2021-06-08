@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.katyrin.githubusers.App
 import com.katyrin.githubusers.api.ApiHolder
+import com.katyrin.githubusers.api.GlideImageLoader
 import com.katyrin.githubusers.data.GithubUser
 import com.katyrin.githubusers.databinding.FragmentUserBinding
 import com.katyrin.githubusers.presenter.BackButtonListener
@@ -18,6 +19,7 @@ import moxy.ktx.moxyPresenter
 
 class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
 
+    var adapter: RepositoriesRVAdapter? = null
     private var vb: FragmentUserBinding? = null
     val presenter: UserPresenter by moxyPresenter {
         val user = arguments?.getParcelable<GithubUser>(USER) as GithubUser
@@ -37,7 +39,8 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     }.root
 
     override fun init() {
-        TODO("Not yet implemented")
+        adapter = RepositoriesRVAdapter(presenter.repositoriesListPresenter)
+        vb?.rvRepositories?.adapter = adapter
     }
 
     override fun setLogin(text: String) {
@@ -45,7 +48,7 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     }
 
     override fun updateList() {
-        TODO("Not yet implemented")
+        adapter?.notifyDataSetChanged()
     }
 
     override fun backPressed() = presenter.backPressed()

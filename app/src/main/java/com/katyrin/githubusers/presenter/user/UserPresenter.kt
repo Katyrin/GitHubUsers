@@ -25,11 +25,12 @@ class UserPresenter(
         }
     }
 
-    private val repositoriesListPresenter = RepositoriesListPresenter()
+    val repositoriesListPresenter = RepositoriesListPresenter()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
+        user.login?.let { viewState.setLogin(it) }
         loadData()
 
         repositoriesListPresenter.itemClickListener = { itemView ->

@@ -7,12 +7,16 @@ import android.view.ViewGroup
 import com.katyrin.githubusers.App
 import com.katyrin.githubusers.R
 import com.katyrin.githubusers.data.GitHubRepository
+import com.katyrin.githubusers.databinding.FragmentRepositoryBinding
+import com.katyrin.githubusers.presenter.BackButtonListener
 import com.katyrin.githubusers.presenter.repository.RepositoryPresenter
+import com.katyrin.githubusers.presenter.repository.RepositoryView
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class RepositoryFragment : MvpAppCompatFragment() {
+class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonListener {
 
+    var vb: FragmentRepositoryBinding? = null
     val presenter: RepositoryPresenter by moxyPresenter {
         val repository = arguments?.getParcelable<GitHubRepository>(REPOSITORY) as GitHubRepository
         RepositoryPresenter(App.instance.router, repository)
@@ -21,10 +25,10 @@ class RepositoryFragment : MvpAppCompatFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_repository, container, false)
-    }
+    ): View =
+        FragmentRepositoryBinding.inflate(inflater, container, false).also {
+            vb = it
+        }.root
 
     companion object {
         private const val REPOSITORY = "REPOSITORY"
@@ -33,5 +37,26 @@ class RepositoryFragment : MvpAppCompatFragment() {
                 putParcelable(REPOSITORY, repository)
             }
         }
+    }
+
+    override fun backPressed() = presenter.backPressed()
+
+    override fun init() {
+
+    }
+
+    override fun setId(id: String) {
+        val idText = "${getString(R.string.id)} $id"
+        vb?.idTextView?.text = idText
+    }
+
+    override fun setTitle(title: String) {
+        val nameText = "${getString(R.string.name)} $title"
+        vb?.nameTextView?.text = nameText
+    }
+
+    override fun setForksCount(forksCount: String) {
+        val forksText = "${getString(R.string.forks_count)} $forksCount"
+        vb?.countForksTextView?.text = forksText
     }
 }
