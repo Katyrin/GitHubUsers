@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.katyrin.githubusers.App
-import com.katyrin.githubusers.data.GithubUsersRepo
+import com.katyrin.githubusers.api.ApiHolder
+import com.katyrin.githubusers.api.GlideImageLoader
 import com.katyrin.githubusers.databinding.FragmentUsersBinding
 import com.katyrin.githubusers.presenter.BackButtonListener
 import com.katyrin.githubusers.presenter.UsersPresenter
 import com.katyrin.githubusers.presenter.UsersView
+import com.katyrin.githubusers.repository.RetrofitGithubUsersRepo
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -20,7 +22,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
     val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(GithubUsersRepo(), App.instance.router, AndroidSchedulers.mainThread())
+        UsersPresenter(
+            RetrofitGithubUsersRepo(ApiHolder.api),
+            App.instance.router,
+            AndroidSchedulers.mainThread()
+        )
     }
     var adapter: UsersRVAdapter? = null
     private var vb: FragmentUsersBinding? = null
@@ -33,12 +39,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }.root
 
     override fun onDestroyView() {
-        super.onDestroyView()
         vb = null
+        super.onDestroyView()
     }
 
     override fun init() {
-        adapter = UsersRVAdapter(presenter.usersListPresenter)
+        adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
         vb?.rvUsers?.adapter = adapter
     }
 

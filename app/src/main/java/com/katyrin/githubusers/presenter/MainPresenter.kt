@@ -10,7 +10,7 @@ class MainPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        router.replaceScreen(AndroidScreens.users())
+        router.replaceScreen(AndroidScreens.UsersScreen().getFragment())
     }
 
     fun backClicked() {

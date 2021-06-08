@@ -11,7 +11,7 @@ class UserPresenter(
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
-        viewState.setLogin(user.login)
+        user.login?.let { viewState.setLogin(it) }
     }
 
     fun backPressed(): Boolean {

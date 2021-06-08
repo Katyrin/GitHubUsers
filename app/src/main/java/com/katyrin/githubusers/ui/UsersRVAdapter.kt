@@ -2,13 +2,17 @@ package com.katyrin.githubusers.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.katyrin.githubusers.api.IImageLoader
 import com.katyrin.githubusers.databinding.ItemUserBinding
 import com.katyrin.githubusers.presenter.IUserListPresenter
 import com.katyrin.githubusers.presenter.UserItemView
 
-class UsersRVAdapter(val presenter: IUserListPresenter) :
-    RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
+class UsersRVAdapter(
+    val presenter: IUserListPresenter,
+    val imageLoader: IImageLoader<ImageView>
+) : RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -34,6 +38,10 @@ class UsersRVAdapter(val presenter: IUserListPresenter) :
 
         override fun setLogin(text: String) = with(vb) {
             tvLogin.text = text
+        }
+
+        override fun loadAvatar(url: String) {
+            imageLoader.loadInto(url, vb.ivAvatar)
         }
     }
 }
