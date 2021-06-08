@@ -7,7 +7,7 @@ import moxy.MvpPresenter
 class RepositoryPresenter(
     private val router: Router,
     private val gitHubRepository: GitHubRepository
-): MvpPresenter<RepositoryView>() {
+) : MvpPresenter<RepositoryView>() {
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()

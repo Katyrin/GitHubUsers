@@ -28,7 +28,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
             AndroidSchedulers.mainThread()
         )
     }
-    var adapter: UsersRVAdapter? = null
+    private var adapter: UsersRVAdapter? = null
     private var vb: FragmentUsersBinding? = null
 
     override fun onCreateView(
@@ -40,6 +40,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun onDestroyView() {
         vb = null
+        adapter = null
         super.onDestroyView()
     }
 

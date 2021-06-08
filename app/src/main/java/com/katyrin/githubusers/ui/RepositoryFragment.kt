@@ -16,7 +16,7 @@ import moxy.ktx.moxyPresenter
 
 class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonListener {
 
-    var vb: FragmentRepositoryBinding? = null
+    private var vb: FragmentRepositoryBinding? = null
     val presenter: RepositoryPresenter by moxyPresenter {
         val repository = arguments?.getParcelable<GitHubRepository>(REPOSITORY) as GitHubRepository
         RepositoryPresenter(App.instance.router, repository)
@@ -58,5 +58,10 @@ class RepositoryFragment : MvpAppCompatFragment(), RepositoryView, BackButtonLis
     override fun setForksCount(forksCount: String) {
         val forksText = "${getString(R.string.forks_count)} $forksCount"
         vb?.countForksTextView?.text = forksText
+    }
+
+    override fun onDestroyView() {
+        vb = null
+        super.onDestroyView()
     }
 }

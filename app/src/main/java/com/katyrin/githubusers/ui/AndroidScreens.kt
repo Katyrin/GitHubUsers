@@ -15,6 +15,7 @@ object AndroidScreens {
     }
 
     class RepositoryScreen(private val repository: GitHubRepository) : IScreen {
-        override fun getFragment(): Screen = FragmentScreen { RepositoryFragment.newInstance(repository) }
+        override fun getFragment(): Screen =
+            FragmentScreen { RepositoryFragment.newInstance(repository) }
     }
 }
