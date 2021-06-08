@@ -8,8 +8,8 @@ import com.katyrin.githubusers.api.ApiHolder
 import com.katyrin.githubusers.api.GlideImageLoader
 import com.katyrin.githubusers.databinding.FragmentUsersBinding
 import com.katyrin.githubusers.presenter.BackButtonListener
-import com.katyrin.githubusers.presenter.UsersPresenter
-import com.katyrin.githubusers.presenter.UsersView
+import com.katyrin.githubusers.presenter.users.UsersPresenter
+import com.katyrin.githubusers.presenter.users.UsersView
 import com.katyrin.githubusers.repository.RetrofitGithubUsersRepo
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment

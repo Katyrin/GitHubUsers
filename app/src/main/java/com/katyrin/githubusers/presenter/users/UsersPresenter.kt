@@ -1,4 +1,4 @@
-package com.katyrin.githubusers.presenter
+package com.katyrin.githubusers.presenter.users
 
 import com.github.terrakok.cicerone.Router
 import com.katyrin.githubusers.data.GithubUser

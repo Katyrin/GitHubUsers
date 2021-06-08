@@ -1,4 +1,4 @@
-package com.katyrin.githubusers.presenter
+package com.katyrin.githubusers.ui
 
 import com.github.terrakok.cicerone.Screen
 

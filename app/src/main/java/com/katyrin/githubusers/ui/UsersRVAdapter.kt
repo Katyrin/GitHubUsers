@@ -6,8 +6,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.katyrin.githubusers.api.IImageLoader
 import com.katyrin.githubusers.databinding.ItemUserBinding
-import com.katyrin.githubusers.presenter.IUserListPresenter
-import com.katyrin.githubusers.presenter.UserItemView
+import com.katyrin.githubusers.presenter.users.IUserListPresenter
+import com.katyrin.githubusers.presenter.users.UserItemView
 
 class UsersRVAdapter(
     val presenter: IUserListPresenter,

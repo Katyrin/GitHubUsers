@@ -1,4 +1,4 @@
-package com.katyrin.githubusers.presenter
+package com.katyrin.githubusers.presenter.main
 
 import com.github.terrakok.cicerone.Router
 import com.katyrin.githubusers.ui.AndroidScreens
