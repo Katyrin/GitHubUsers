@@ -6,7 +6,10 @@ import android.view.ViewGroup
 import com.katyrin.githubusers.App
 import com.katyrin.githubusers.api.ApiHolder
 import com.katyrin.githubusers.api.GlideImageLoader
+import com.katyrin.githubusers.data.cache.GithubUsersCacheImpl
+import com.katyrin.githubusers.data.room.Database
 import com.katyrin.githubusers.databinding.FragmentUsersBinding
+import com.katyrin.githubusers.network.AndroidNetworkStatus
 import com.katyrin.githubusers.presenter.BackButtonListener
 import com.katyrin.githubusers.presenter.users.UsersPresenter
 import com.katyrin.githubusers.presenter.users.UsersView
@@ -21,9 +24,16 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
+    private val database: Database by lazy {
+        Database.apply { create(requireContext()) }.getInstance()
+    }
     val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
-            RetrofitGithubUsersRepo(ApiHolder.api),
+            RetrofitGithubUsersRepo(
+                ApiHolder.api,
+                AndroidNetworkStatus(requireContext()),
+                GithubUsersCacheImpl(database)
+            ),
             App.instance.router,
             AndroidSchedulers.mainThread()
         )
