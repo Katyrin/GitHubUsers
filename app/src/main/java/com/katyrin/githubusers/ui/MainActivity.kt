@@ -6,8 +6,8 @@ import com.katyrin.githubusers.App
 import com.katyrin.githubusers.R
 import com.katyrin.githubusers.databinding.ActivityMainBinding
 import com.katyrin.githubusers.presenter.BackButtonListener
-import com.katyrin.githubusers.presenter.MainPresenter
-import com.katyrin.githubusers.presenter.MainView
+import com.katyrin.githubusers.presenter.main.MainPresenter
+import com.katyrin.githubusers.presenter.main.MainView
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
