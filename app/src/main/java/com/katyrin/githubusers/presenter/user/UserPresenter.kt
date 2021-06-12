@@ -6,6 +6,7 @@ import com.katyrin.githubusers.data.GithubUser
 import com.katyrin.githubusers.repository.IGithubRepositoriesRepo
 import com.katyrin.githubusers.ui.AndroidScreens
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
 
 class UserPresenter(
@@ -26,6 +27,7 @@ class UserPresenter(
     }
 
     val repositoriesListPresenter = RepositoriesListPresenter()
+    private var disposable: CompositeDisposable? = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -40,9 +42,11 @@ class UserPresenter(
     }
 
     fun loadData() {
-        repositoriesRepo.getRepositories(user)
-            .observeOn(uiScheduler)
-            .subscribe(::updateRepositories) { it.printStackTrace() }
+        disposable?.add(
+            repositoriesRepo.getRepositories(user)
+                .observeOn(uiScheduler)
+                .subscribe(::updateRepositories) { it.printStackTrace() }
+        )
     }
 
     private fun updateRepositories(repositories: List<GitHubRepository>) {
@@ -54,5 +58,13 @@ class UserPresenter(
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        if (disposable != null) {
+            disposable?.clear()
+            disposable = null
+        }
+        super.onDestroy()
     }
 }

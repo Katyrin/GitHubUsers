@@ -44,7 +44,6 @@ class RetrofitGithubRepositoriesRepo(
                     db.repositoryDao.findForUser(roomUser.id)
                         .map { GitHubRepository(it.id, it.name, it.forksCount) }
                 }
-
             }
         }.subscribeOn(Schedulers.io())
 }
