@@ -6,7 +6,10 @@ import android.view.ViewGroup
 import com.katyrin.githubusers.App
 import com.katyrin.githubusers.api.ApiHolder
 import com.katyrin.githubusers.data.GithubUser
+import com.katyrin.githubusers.data.cache.GithubRepositoriesCacheImpl
+import com.katyrin.githubusers.data.room.Database
 import com.katyrin.githubusers.databinding.FragmentUserBinding
+import com.katyrin.githubusers.network.AndroidNetworkStatus
 import com.katyrin.githubusers.presenter.BackButtonListener
 import com.katyrin.githubusers.presenter.user.UserPresenter
 import com.katyrin.githubusers.presenter.user.UserView
@@ -20,12 +23,19 @@ class UserFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
 
     private var adapter: RepositoriesRVAdapter? = null
     private var vb: FragmentUserBinding? = null
+    private val database: Database by lazy {
+        Database.apply { create(requireContext()) }.getInstance()
+    }
     val presenter: UserPresenter by moxyPresenter {
         val user = arguments?.getParcelable<GithubUser>(USER) as GithubUser
         UserPresenter(
             App.instance.router,
             user,
-            RetrofitGithubRepositoriesRepo(ApiHolder.api),
+            RetrofitGithubRepositoriesRepo(
+                ApiHolder.api,
+                AndroidNetworkStatus(requireContext()),
+                GithubRepositoriesCacheImpl(database)
+            ),
             AndroidSchedulers.mainThread()
         )
     }

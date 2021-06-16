@@ -28,7 +28,7 @@ class UsersPresenter(
     }
 
     val usersListPresenter = UsersListPresenter()
-    private var disposable: CompositeDisposable = CompositeDisposable()
+    private var disposable: CompositeDisposable? = CompositeDisposable()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -41,7 +41,7 @@ class UsersPresenter(
     }
 
     fun loadData() {
-        disposable.add(
+        disposable?.add(
             usersRepo.getUsers()
                 .observeOn(uiScheduler)
                 .subscribe(::updateUsers) { it.printStackTrace() }
@@ -60,7 +60,10 @@ class UsersPresenter(
     }
 
     override fun onDestroy() {
-        disposable.dispose()
+        if (disposable != null) {
+            disposable?.clear()
+            disposable = null
+        }
         super.onDestroy()
     }
 }
