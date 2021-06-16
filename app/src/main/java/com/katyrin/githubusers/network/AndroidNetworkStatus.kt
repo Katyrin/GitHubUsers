@@ -4,9 +4,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import javax.inject.Inject
 
-class AndroidNetworkStatus(context: Context) : INetworkStatus {
+class AndroidNetworkStatus @Inject constructor(context: Context) : INetworkStatus {
+
     private val statusSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     init {
@@ -32,5 +35,5 @@ class AndroidNetworkStatus(context: Context) : INetworkStatus {
     }
 
     override fun isOnline() = statusSubject
-    override fun isOnlineSingle() = statusSubject.first(false)
+    override fun isOnlineSingle(): Single<Boolean> = statusSubject.first(false)
 }

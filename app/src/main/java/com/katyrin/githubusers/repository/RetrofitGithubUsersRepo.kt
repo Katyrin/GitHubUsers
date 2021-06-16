@@ -6,9 +6,10 @@ import com.katyrin.githubusers.data.cache.GithubUsersCache
 import com.katyrin.githubusers.network.INetworkStatus
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
-class RetrofitGithubUsersRepo(
-    val api: IDataSource,
+class RetrofitGithubUsersRepo @Inject constructor(
+    private val api: IDataSource,
     private val networkStatus: INetworkStatus,
     private val githubUsersCache: GithubUsersCache
 ) : IGithubUsersRepo {

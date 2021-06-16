@@ -8,13 +8,20 @@ import com.katyrin.githubusers.ui.AndroidScreens
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 class UserPresenter(
-    private val router: Router,
-    private val user: GithubUser,
-    private val repositoriesRepo: IGithubRepositoriesRepo,
-    private val uiScheduler: Scheduler
+    private val user: GithubUser
 ) : MvpPresenter<UserView>() {
+
+    @Inject
+    lateinit var router: Router
+
+    @Inject
+    lateinit var uiScheduler: Scheduler
+
+    @Inject
+    lateinit var iGithubRepositoriesRepo: IGithubRepositoriesRepo
 
     class RepositoriesListPresenter : IRepositoryListPresenter {
         val repositories = mutableListOf<GitHubRepository>()
@@ -43,7 +50,7 @@ class UserPresenter(
 
     fun loadData() {
         disposable?.add(
-            repositoriesRepo.getRepositories(user)
+            iGithubRepositoriesRepo.getRepositories(user)
                 .observeOn(uiScheduler)
                 .subscribe(::updateRepositories) { it.printStackTrace() }
         )
@@ -61,10 +68,8 @@ class UserPresenter(
     }
 
     override fun onDestroy() {
-        if (disposable != null) {
-            disposable?.clear()
-            disposable = null
-        }
+        disposable?.clear()
+        disposable = null
         super.onDestroy()
     }
 }

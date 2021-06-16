@@ -6,8 +6,11 @@ import com.katyrin.githubusers.data.room.RoomGithubUser
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
-class GithubUsersCacheImpl(private val db: Database) : GithubUsersCache {
+class GithubUsersCacheImpl @Inject constructor(
+    private val db: Database
+) : GithubUsersCache {
     override fun getUsers(): Single<List<GithubUser>> =
         Single.fromCallable {
             db.userDao.getAll().map { roomUser ->
