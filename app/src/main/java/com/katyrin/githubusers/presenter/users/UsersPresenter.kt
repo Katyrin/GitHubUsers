@@ -7,24 +7,28 @@ import com.katyrin.githubusers.ui.AndroidScreens
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import moxy.MvpPresenter
+import javax.inject.Inject
 
-class UsersPresenter(
-    private val usersRepo: IGithubUsersRepo,
-    private val router: Router,
-    private val uiScheduler: Scheduler
-) : MvpPresenter<UsersView>() {
+class UsersPresenter : MvpPresenter<UsersView>() {
+
+    @Inject
+    lateinit var usersRepo: IGithubUsersRepo
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var uiScheduler: Scheduler
 
     class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
+
+        override fun getCount() = users.size
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
             user.login?.let { view.setLogin(it) }
             user.avatarUrl?.let { view.loadAvatar(it) }
         }
-
-        override fun getCount() = users.size
     }
 
     val usersListPresenter = UsersListPresenter()
@@ -34,6 +38,7 @@ class UsersPresenter(
         super.onFirstViewAttach()
         viewState.init()
         loadData()
+
         usersListPresenter.itemClickListener = { itemView ->
             val user = usersListPresenter.users[itemView.pos]
             router.navigateTo(AndroidScreens.UserScreen(user).getFragment())
@@ -60,10 +65,8 @@ class UsersPresenter(
     }
 
     override fun onDestroy() {
-        if (disposable != null) {
-            disposable?.clear()
-            disposable = null
-        }
+        disposable?.clear()
+        disposable = null
         super.onDestroy()
     }
 }

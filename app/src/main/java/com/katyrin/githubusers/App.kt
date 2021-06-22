@@ -1,20 +1,23 @@
 package com.katyrin.githubusers
 
 import android.app.Application
-import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Router
+import com.katyrin.githubusers.di.AppComponent
+import com.katyrin.githubusers.di.modules.AppModule
+import com.katyrin.githubusers.di.DaggerAppComponent
 
 class App : Application() {
     companion object {
         lateinit var instance: App
     }
 
-    private val cicerone: Cicerone<Router> by lazy { Cicerone.create() }
-    val navigatorHolder get() = cicerone.getNavigatorHolder()
-    val router get() = cicerone.router
+    lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .build()
     }
 }

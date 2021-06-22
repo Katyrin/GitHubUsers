@@ -8,9 +8,10 @@ import com.katyrin.githubusers.network.INetworkStatus
 import com.katyrin.githubusers.utils.NO_SUCH_USER
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
-class RetrofitGithubRepositoriesRepo(
-    val api: IDataSource,
+class RetrofitGithubRepositoriesRepo @Inject constructor(
+    private val api: IDataSource,
     private val networkStatus: INetworkStatus,
     private val githubRepositoriesCache: GithubRepositoriesCache
 ) : IGithubRepositoriesRepo {
